@@ -1,0 +1,70 @@
+spring:
+  http:
+    encoding:
+      charset: UTF-8
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+    default-property-inclusion: non_null
+#  redis:
+#    pool:
+#      min-idle: 100
+#    timeout: 6000
+#    cluster:
+#      max-redirects: 1000
+#      nodes:
+#        127.0.0.1:7001
+#        127.0.0.1:7002
+
+druid:
+  type: com.alibaba.druid.pool.DruidDataSource
+  master:
+    url: jdbc:mysql://10.180.6.149:3306/dmsdev1?useUnicode=yes&charaterEncoding=UTF-8&useSSL=false
+    driver-class-name: com.mysql.jdbc.Driver
+    username: dev1
+    password: dev1
+    initialSize: 5
+    minIdel: 1
+    maxActive: 100
+    maxWait: 60000
+    maxTotal: 10
+    validationQuery: SELECT 1
+    testWhileIdle: true
+    testOnBorrow: false
+    timeBetweenEvictionRunsMillis: 30000
+    minEvictableIdleTimeMillis: 1800000
+    numTestsPerEvictionRun: 10
+    removeAbandonedOnBorrow: true
+    removeAbandonedTimeout: 180
+  slave:
+    url: jdbc:mysql://10.180.6.149:3306/dmsdev1?useUnicode=yes&charaterEncoding=UTF-8&useSSL=false
+    driver-class-name: mysql.jdbc.Driver
+    username: dev1
+    password: dev1
+    initialSize: 5
+    minIdel: 1
+    maxActive: 100
+    maxWait: 60000
+    maxTotal: 10
+    validationQuery: SELECT 1
+    testWhileIdle: true
+    testOnBorrow: false
+    timeBetweenEvictionRunsMillis: 30000
+    minEvictableIdleTimeMillis: 1800000
+    numTestsPerEvictionRun: 10
+    removeAbandonedOnBorrow: true
+    removeAbandonedTimeout: 180
+
+mybatis:
+  type-aliases-package: com.fuxl.anything
+  mapper-locations: classpath:com/fuxl/mapping/*.xml
+
+logging:
+  level:
+    tk.mybatis: TRACE
+
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql

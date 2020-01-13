@@ -1,5 +1,6 @@
 package com.fuxl.controller;
 
+import com.fuxl.dataSource.ReadOnly;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -16,6 +17,7 @@ public class HelloController {
     @ApiOperation(value = "return hello")
 //    @RequestMapping()
     @GetMapping("/hello")
+    @ReadOnly
     public String hello() {
         return "hello";
     }

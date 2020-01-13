@@ -1,10 +1,24 @@
 package com.fuxl.dataSource;
 
-public enum DataBaseContextHolder {
-    MASTER,SLAVE;
+public class DataBaseContextHolder {
 
-    public static String getDataSource(){
+    public enum DataBaseType {
+        MASTER, SLAVE;
+    }
 
-        return "";
+    public static final ThreadLocal<DataBaseType> dataType = new ThreadLocal<DataBaseType>();
+
+
+    public static DataBaseType getDataBaseType() {
+        return dataType.get() == null ? DataBaseType.MASTER : dataType.get();
+    }
+
+    public static void setDataBasicType(DataBaseType dataBasicType) {
+        if (dataBasicType == null) throw new NullPointerException();
+        dataType.set(dataBasicType);
+    }
+
+    public static void clearDataBasicType() {
+        dataType.remove();
     }
 }

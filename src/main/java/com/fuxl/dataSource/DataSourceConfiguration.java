@@ -71,6 +71,10 @@ public class DataSourceConfiguration {
         return servletRegistrationBean;
     }
 
+    /**
+     * 创建过滤器
+     * @return
+     */
     @Bean
     public FilterRegistrationBean filterRegistrationBean() {
         FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();

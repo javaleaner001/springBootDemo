@@ -3,11 +3,13 @@ package com.fuxl.dataSource;
 import org.apache.ibatis.mapping.DatabaseIdProvider;
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.aspectj.apache.bcel.util.ClassLoaderRepository;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.boot.autoconfigure.ConfigurationCustomizer;
 import org.mybatis.spring.boot.autoconfigure.MybatisAutoConfiguration;
 import org.mybatis.spring.boot.autoconfigure.MybatisProperties;
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
@@ -28,6 +30,7 @@ public class MyMybatisAutoConfiguration extends MybatisAutoConfiguration {
     @Resource(name = "slaveDataSource")
     private DataSource slaveDataSource;
 
+
     public MyMybatisAutoConfiguration(MybatisProperties properties, ObjectProvider<Interceptor[]> interceptorsProvider, ResourceLoader resourceLoader, ObjectProvider<DatabaseIdProvider> databaseIdProvider, ObjectProvider<List<ConfigurationCustomizer>> configurationCustomizersProvider) {
         super(properties, interceptorsProvider, resourceLoader, databaseIdProvider, configurationCustomizersProvider);
     }
@@ -38,8 +41,14 @@ public class MyMybatisAutoConfiguration extends MybatisAutoConfiguration {
     }
 
     private AbstractRoutingDataSource getDataSourceProxy() {
-
-        return null;
+        ReadWriteRoutingDataSource proxy = new ReadWriteRoutingDataSource();
+        ClassLoaderRepository.SoftHashMap softHashMap = new ClassLoaderRepository.SoftHashMap();
+        softHashMap.put(DataBaseContextHolder.DataBaseType.MASTER, masterDataSource);
+        softHashMap.put(DataBaseContextHolder.DataBaseType.SLAVE, slaveDataSource);
+        proxy.setTargetDataSources(softHashMap);
+        //默认数据源
+        proxy.setDefaultTargetDataSource(masterDataSource);
+        return proxy;
     }
 
 }

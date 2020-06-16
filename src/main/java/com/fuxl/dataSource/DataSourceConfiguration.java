@@ -1,4 +1,13 @@
 package com.fuxl.dataSource;
+/**
+ * 主从分离设计步骤：
+ * 1、主从数据源配置；
+ * 2、主从数据源转换为对象@Value({*.*.*})
+ * 3、mybatis管理数据源sqlSessionFactory (MyMybatisAutoConfiguration extends MybatisAutoConfiguration)
+ * 4、代理数据源获取方式（ReadWriteRoutingDataSource extends AbstractRoutingDataSource 根据需求得知拿到主库还是从库 相当于代理）
+ * 5、新建注解@ReadonlyConnection
+ * 6、给注解添加AOP代理@Around("@annotation(readonlyConnection)")
+ */
 
 import com.alibaba.druid.support.http.StatViewServlet;
 import com.alibaba.druid.support.http.WebStatFilter;
